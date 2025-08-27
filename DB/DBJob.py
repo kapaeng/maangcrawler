@@ -45,7 +45,7 @@ class DBjob(Base):
 
         with Session(engine) as session:
             query = session.query(DBjob).filter(
-                and_(*clauses))
+                and_(*clauses)).order_by(DBjob.date.desc())
         return query.all()
 
 

@@ -1,0 +1,5 @@
+.vscode/
+Crawlers/__pycache__/
+DB/__pycache__/
+database.db
+venv/

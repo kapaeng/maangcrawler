@@ -5,3 +5,4 @@ requests
 sqlalchemy
 bs4
 tqdm
+blinker<1.8

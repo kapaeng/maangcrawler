@@ -5,7 +5,8 @@ import requests
 from .Crawler import Crawler
 from .Job import Job
 
-MICROSOFTURL = "https://gcsservices.careers.microsoft.com/search/api/v1/search?l=en_us&pg={}&pgSz=200&o=Relevance&flt=true"
+# MICROSOFTURL = "https://gcsservices.careers.microsoft.com/search/api/v1/search?l=en_us&pg={}&pgSz=200&o=Relevance&flt=true"
+MICROSOFTURL = "https://gcsservices.careers.microsoft.com/search/api/v1/search?q=software%20engineer&lc=United%20States&ws=Up%20to%20100%25%20work%20from%20home&l=en_us&pg={}&pgSz=200&o=Relevance&flt=true"
 
 
 class Microsoft(Crawler):
@@ -22,6 +23,7 @@ class Microsoft(Crawler):
         jobs = []
         for i in range(1, self.total_jobs // self.jobs_per_page):
             parsed_jobs = self.parse_job_page(i)
+            print(parsed_jobs)
             for j in parsed_jobs["operationResult"]["result"]["jobs"]:
                 jobs.append(Job(company="microsoft", title=j["title"], date=j["postingDate"],
                                 desc=j["properties"]["description"], id=j["jobId"],

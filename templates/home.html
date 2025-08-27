@@ -34,7 +34,7 @@
     <h5 class="text-white">Results</h5>
     {%for job in jobs%}
     <div class="card bg-light mb-3">
-        <div class="card-header text-start">{{job['title']}}@{{job['company']}}</div>
+        <div class="card-header text-start">{{ loop.index }}.{{job['title']}}@{{job['company']}}</div>
         <div class="card-body">
             <a href="{{job['url']}}">{{job['id']}}</a>
             {{job['desc']}}

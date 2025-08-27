@@ -15,7 +15,11 @@ class Amazon(Crawler):
         self.total_jobs = self.parsed_json["hits"]
 
     def parse_job_page(self, i=0):
-        website = requests.get(AMAZONURL.format(JOBSPERPAGE * i, JOBSPERPAGE))
+        website = requests.get(
+            AMAZONURL.format(JOBSPERPAGE * i, JOBSPERPAGE),
+            headers={"Accept-Encoding": "gzip, deflate, br", "User-Agent": "Mozilla/5.0"},
+            timeout=20,
+        )
         return json.loads(website.text)
 
     def get_jobs(self) -> List[Job]:
