@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import String, and_
+from sqlalchemy import String, and_, or_
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session
 from sqlalchemy.orm import Mapped
@@ -34,18 +34,31 @@ class DBjob(Base):
             except Exception:
                 print("Job already stored")
 
-    def search(self, q: str) -> List:
-        queries = q.split(" ")
+    def search(self, keywords: str, location: str) -> List:
 
-        clauses = []
-        clauses.extend([DBjob.desc.like('%{0}%'.format(k)) for k in queries])
-        # clauses.extend([DBjob.title.like('%{0}%'.format(k)) for k in queries])
-        # clauses.extend([DBjob.company.like('%{0}%'.format(k)) for k in queries])
-        # clauses.extend([DBjob.location.like('%{0}%'.format(k)) for k in queries])
+        search_keywords = keywords.split(" ")
+        keyword_conditions = [DBjob.desc.like(f'%{keyword}%') for keyword in search_keywords] + [
+            DBjob.title.like(f'%{keyword}%') for keyword in search_keywords] + [
+            DBjob.company.like(f'%{keyword}%') for keyword in search_keywords
+        ]
+
+        location_terms = location.split(" ")
+        location_conditions = [
+            DBjob.location.like(f'%{loc}%') for loc in location_terms
+        ]
+        filters = []
+
+        if keyword_conditions:
+            filters.append(or_(*keyword_conditions))
+        if location_conditions:
+            filters.append(or_(*location_conditions))
+
+        final_filter = and_(*filters) if filters else True
 
         with Session(engine) as session:
             query = session.query(DBjob).filter(
-                and_(*clauses)).order_by(DBjob.date.desc())
+                final_filter).order_by(DBjob.date.desc())
+            
         return query.all()
 
 

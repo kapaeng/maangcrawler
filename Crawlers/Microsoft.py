@@ -23,7 +23,7 @@ class Microsoft(Crawler):
         jobs = []
         for i in range(1, self.total_jobs // self.jobs_per_page):
             parsed_jobs = self.parse_job_page(i)
-            print(parsed_jobs)
+            # print(parsed_jobs)
             for j in parsed_jobs["operationResult"]["result"]["jobs"]:
                 jobs.append(Job(company="microsoft", title=j["title"], date=j["postingDate"],
                                 desc=j["properties"]["description"], id=j["jobId"],

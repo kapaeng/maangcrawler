@@ -26,7 +26,7 @@ DB = DBjob()
 
 app = Flask("maangsearch")
 
-DISABLE_UPDATE = False
+DISABLE_UPDATE = True
 
 
 def crawl_jobs():
@@ -51,7 +51,8 @@ def main():
     jobs = []
     if "job" in request.args:
         search_word = request.args.get("job")
-        jobs = DB.search(search_word)
+        location = request.args.get("location")
+        jobs = DB.search(search_word, location)
     return render_template("home.html", jobs=jobs)
 
 

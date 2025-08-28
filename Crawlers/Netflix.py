@@ -24,7 +24,7 @@ class Netflix(Crawler):
         jobs = []
         for i in range(0, 15):
             parsed_jobs = self.parse_job_page(i*PAGE_SIZE)
-            print( parsed_jobs )
+            # print( parsed_jobs )
             for j in parsed_jobs["positions"]:
             # for j in parsed_jobs["records"]["postings"]:
                 #jobJson = json.loads(requests.get(JOBURL.format(j["id"])).text)
